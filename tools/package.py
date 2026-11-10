@@ -4,7 +4,7 @@ from pathlib import Path
 
 root = Path(sys.argv[1])
 classes = Path(sys.argv[2])
-version = '0.2.1'
+version = '0.2.2'
 jar_name = f'my-pycharm-{version}.jar'
 out_zip = root / f'my-pycharm-{version}.zip'
 res = root / 'src' / 'main' / 'resources'

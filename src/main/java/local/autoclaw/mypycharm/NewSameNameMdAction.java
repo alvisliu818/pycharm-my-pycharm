@@ -80,13 +80,18 @@ public final class NewSameNameMdAction extends AnAction {
             FileEditorManagerEx fem = FileEditorManagerEx.getInstanceEx(project);
             if (FileEditorManager.getInstance(project).getSelectedTextEditor() != null
                     && fem.getCurrentWindow() != null) {
-                // 下方已有分栏 → 直接在已有分栏打开；否则新拆一栏（VERTICAL_SPLIT=上下、fileIsSecondaryComponent=true=新窗格在下方）
-                EditorWindow below = fem.getCurrentWindow().getAdjacentEditors()
-                        .get(EditorWindow.RelativePosition.DOWN);
+                // 成对语义：当前栏下方有分栏 → 在已有分栏打开；
+                // 当前栏本身就是下方那栏（上次分栏后焦点在 md 栏）→ 就地打开，不再新拆；
+                // 都不是 → 新拆下方一栏（VERTICAL_SPLIT=上下、fileIsSecondaryComponent=true=新窗格在下方）
+                EditorWindow cur = fem.getCurrentWindow();
+                java.util.Map<EditorWindow.RelativePosition, EditorWindow> adj = cur.getAdjacentEditors();
+                EditorWindow below = adj.get(EditorWindow.RelativePosition.DOWN);
                 if (below != null) {
                     fem.openFileWithProviders(md, true, below);
+                } else if (adj.containsKey(EditorWindow.RelativePosition.UP)) {
+                    fem.openFileWithProviders(md, true, cur);
                 } else {
-                    fem.getCurrentWindow().split(JSplitPane.VERTICAL_SPLIT, true, md, true, true, false);
+                    cur.split(JSplitPane.VERTICAL_SPLIT, true, md, true, true, false);
                 }
                 return;
             }

@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>local.autoclaw.my-pycharm</id>
     <name>My PyCharm</name>
-    <version>0.2.1</version>
+    <version>0.2.2</version>
     <vendor>autoclaw-local</vendor>
     <description><![CDATA[
     <p>个人插件合集，功能对齐 vscode-my-vscode：</p>

@@ -9,7 +9,7 @@
 
 ## 安装
 
-设置 → Plugins → ⚙ → **Install Plugin from Disk...** → 选 `my-pycharm-0.2.1.zip`，重启。
+设置 → Plugins → ⚙ → **Install Plugin from Disk...** → 选 `my-pycharm-0.2.2.zip`，重启。
 
 目标平台：PyCharm 2026.3（build 263+）。2026.3 起平台类是 Java 25 字节码，插件随平台要求编译为 release 25。
 
