@@ -1,0 +1,97 @@
+<idea-plugin>
+    <id>local.autoclaw.my-pycharm</id>
+    <name>My PyCharm</name>
+    <version>0.2.1</version>
+    <vendor>autoclaw-local</vendor>
+    <description><![CDATA[
+    <p>个人插件合集，功能对齐 vscode-my-vscode：</p>
+    <ul>
+      <li>Python 文件里输入 <code>[[</code> 或 <code>./</code> 自动提示文件路径补全（类 Obsidian wiki-link，回车插入路径，目录带 / 尾巴）。</li>
+      <li>把 <code>.git</code> 外迁的分离 git 仓库（各根目录 <code>*-gl.sh</code> 包装脚本自动发现）绑定进版本控制：暂存 / 提交 / 推送 / 拉取 / 切分支 / 管理远程，提交面板直接可用。</li>
+      <li>提交图表工具窗（<code>git log --graph</code> 渲染，双击提交查看文件差异）。</li>
+      <li>右键「新建同名 MD 文件」。</li>
+    </ul>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.vcs</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.python</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <vcs name="my-pycharm"
+             vcsClass="local.autoclaw.mypycharm.vcs.MyVcs"
+             displayName="My PyCharm（分离 Git 仓库）"
+             administrativeAreaName=".git"/>
+
+        <completion.contributor id="myPycharmCompletion"
+                                implementationClass="local.autoclaw.mypycharm.completion.MyCompletionContributor"
+                                order="first"/>
+        <typedHandler implementation="local.autoclaw.mypycharm.completion.MyTypedHandler"/>
+
+        <toolWindow id="MyPycharmGraph"
+                    factoryClass="local.autoclaw.mypycharm.graph.MyGraphToolWindowFactory"
+                    anchor="bottom"
+                    canCloseContents="false"
+                    icon="/icons/myPycharm.svg"/>
+
+        <postStartupActivity implementation="local.autoclaw.mypycharm.MyStartup"/>
+
+        <notificationGroup id="My Pycharm" displayType="BALLOON"/>
+
+        <projectConfigurable parentId="tools"
+                             instance="local.autoclaw.mypycharm.MyConfigurable"
+                             id="local.autoclaw.mypycharm"
+                             displayName="My PyCharm"
+                             nonDefaultProject="true"/>
+    </extensions>
+
+    <actions>
+        <group id="local.autoclaw.mypycharm.Group" text="My Pycharm" popup="true">
+            <add-to-group group-id="VcsGroup" anchor="last"/>
+            <action id="myPycharm.refresh" class="local.autoclaw.mypycharm.vcs.MyVcsActions$RefreshAction"
+                    text="刷新所有仓库" icon="AllIcons.Actions.Refresh"/>
+            <action id="myPycharm.reloadBindings" class="local.autoclaw.mypycharm.vcs.MyVcsActions$ReloadBindingsAction"
+                    text="重新加载绑定" icon="AllIcons.Actions.Restart"/>
+            <separator/>
+            <action id="myPycharm.checkout" class="local.autoclaw.mypycharm.vcs.MyVcsActions$BranchAction"
+                    text="切换分支" icon="AllIcons.Vcs.Branch"/>
+            <action id="myPycharm.publish" class="local.autoclaw.mypycharm.vcs.MyVcsActions$PublishAction"
+                    text="发布分支到远程" icon="AllIcons.Actions.Upload"/>
+            <action id="myPycharm.sync" class="local.autoclaw.mypycharm.vcs.MyVcsActions$SyncAction"
+                    text="同步更改（拉取+推送）" icon="AllIcons.Actions.Refresh"/>
+            <action id="myPycharm.push" class="local.autoclaw.mypycharm.vcs.MyVcsActions$PushAction"
+                    text="推送" icon="AllIcons.Vcs.Push"/>
+            <action id="myPycharm.pull" class="local.autoclaw.mypycharm.vcs.MyVcsActions$PullAction"
+                    text="拉取" icon="AllIcons.Vcs.Update"/>
+            <action id="myPycharm.remotes" class="local.autoclaw.mypycharm.vcs.MyVcsActions$RemotesAction"
+                    text="管理远程" icon="AllIcons.Actions.Properties"/>
+            <separator/>
+            <action id="myPycharm.stageAll" class="local.autoclaw.mypycharm.vcs.MyVcsActions$StageAllAction"
+                    text="暂存全部" icon="AllIcons.General.Add"/>
+            <action id="myPycharm.unstageAll" class="local.autoclaw.mypycharm.vcs.MyVcsActions$UnstageAllAction"
+                    text="取消全部暂存" icon="AllIcons.General.Remove"/>
+            <action id="myPycharm.discardAll" class="local.autoclaw.mypycharm.vcs.MyVcsActions$DiscardAllAction"
+                    text="放弃全部更改" icon="AllIcons.Actions.Rollback"/>
+        </group>
+
+        <action id="myPycharm.stage" class="local.autoclaw.mypycharm.vcs.MyVcsActions$StageSelectedAction"
+                text="暂存" icon="AllIcons.General.Add">
+            <add-to-group group-id="ChangesViewPopupMenu" anchor="last"/>
+        </action>
+        <action id="myPycharm.unstage" class="local.autoclaw.mypycharm.vcs.MyVcsActions$UnstageSelectedAction"
+                text="取消暂存" icon="AllIcons.General.Remove">
+            <add-to-group group-id="ChangesViewPopupMenu" anchor="last"/>
+        </action>
+        <action id="myPycharm.discard" class="local.autoclaw.mypycharm.vcs.MyVcsActions$DiscardSelectedAction"
+                text="放弃更改" icon="AllIcons.Actions.Rollback">
+            <add-to-group group-id="ChangesViewPopupMenu" anchor="last"/>
+        </action>
+
+        <action id="myPycharm.newSameNameMd" class="local.autoclaw.mypycharm.NewSameNameMdAction"
+                text="新建同名 MD 文件" icon="AllIcons.FileTypes.Text">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
