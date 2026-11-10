@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugins>
+  <plugin id="local.autoclaw.my-pycharm"
+          url="https://raw.githubusercontent.com/alvisliu818/pycharm-my-pycharm/main/my-pycharm-0.2.2.zip"
+          version="0.2.2"/>
+</plugins>

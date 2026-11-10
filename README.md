@@ -9,7 +9,13 @@
 
 ## 安装
 
-设置 → Plugins → ⚙ → **Install Plugin from Disk...** → 选 `my-pycharm-0.2.2.zip`，重启。
+**方式一（推荐，一次配置以后在线更新）**：仓库已内置 `updatePlugins.xml` 自定义插件仓库——
+1. Settings → Plugins → ⚙ → **Manage Plugin Repositories...** → 添加：
+   `https://raw.githubusercontent.com/alvisliu818/pycharm-my-pycharm/main/updatePlugins.xml`
+2. Plugins → Marketplace 页搜 **My PyCharm** → Install → 重启；以后新版本直接在 Updates 里出现。
+3. 若之前用磁盘方式装过：先卸载旧的再从 Marketplace 装（只这一次）。
+
+**方式二（磁盘安装）**：Settings → Plugins → ⚙ → **Install Plugin from Disk...** → 选 `my-pycharm-0.2.2.zip`，重启；若已装同版本再装会弹「Cannot update plugin」，卸载重启后重装即可。
 
 目标平台：PyCharm 2026.3（build 263+）。2026.3 起平台类是 Java 25 字节码，插件随平台要求编译为 release 25。
 
