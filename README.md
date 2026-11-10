@@ -11,9 +11,12 @@
 
 **方式一（推荐，一次配置以后在线更新）**：仓库已内置 `updatePlugins.xml` 自定义插件仓库——
 1. Settings → Plugins → ⚙ → **Manage Plugin Repositories...** → 添加：
-   `https://raw.githubusercontent.com/alvisliu818/pycharm-my-pycharm/main/updatePlugins.xml`
+   `https://cdn.jsdelivr.net/gh/alvisliu818/pycharm-my-pycharm@main/updatePlugins.xml`
+   （jsDelivr CDN，国内可直连无需代理；若连不上再试 raw 备选：`https://raw.githubusercontent.com/alvisliu818/pycharm-my-pycharm/main/updatePlugins.xml`，需要 IDE 配代理）
 2. Plugins → Marketplace 页搜 **My PyCharm** → Install → 重启；以后新版本直接在 Updates 里出现。
 3. 若之前用磁盘方式装过：先卸载旧的再从 Marketplace 装（只这一次）。
+
+> 提示：若添加仓库时报连接错误，多半是 IDE 没走代理。备选方案：Settings → Appearance & Behavior → System Settings → HTTP Proxy → Manual → Host `127.0.0.1` Port `7897` → Check connection 验证 `https://raw.githubusercontent.com/` 通过后再用 raw 地址。
 
 **方式二（磁盘安装）**：Settings → Plugins → ⚙ → **Install Plugin from Disk...** → 选 `my-pycharm-0.2.2.zip`，重启；若已装同版本再装会弹「Cannot update plugin」，卸载重启后重装即可。
 
