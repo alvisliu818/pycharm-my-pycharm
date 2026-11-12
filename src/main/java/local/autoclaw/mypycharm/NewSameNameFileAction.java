@@ -14,15 +14,15 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * 右键「生成同步文件」：在同目录生成 <base>_<n>.<ext>（n 取最小未占用序号，
- * test.py → test_0.py → test_1.py…）；设置「生成同步文件时复制原文件内容」
+ * 右键「生成同名文件」：在同目录生成 <base>_<n>.<ext>（n 取最小未占用序号，
+ * test.py → test_0.py → test_1.py…）；设置「生成同名文件时复制原文件内容」
  * 开启时复制原文件内容，默认创建空文件。生成后直接打开。
  */
-public final class NewSyncFileAction extends AnAction {
+public final class NewSameNameFileAction extends AnAction {
     private static final int MAX_SEQ = 10000;
 
-    public NewSyncFileAction() {
-        super("生成同步文件");
+    public NewSameNameFileAction() {
+        super("生成同名文件");
     }
 
     @Override
@@ -48,7 +48,7 @@ public final class NewSyncFileAction extends AnAction {
         String base = dot > 0 ? name.substring(0, dot) : name;
         String ext = dot > 0 ? name.substring(dot) : "";
         if (base.isBlank()) {
-            MyUi.info(project, "My Pycharm：无法从文件名 " + name + " 生成同步文件名。");
+            MyUi.info(project, "My Pycharm：无法从文件名 " + name + " 生成同名文件。");
             return;
         }
         VirtualFile dir = f.getParent();
@@ -65,11 +65,11 @@ public final class NewSyncFileAction extends AnAction {
             }
         }
         if (target == null) {
-            MyUi.error(project, "My Pycharm：序号已达上限（" + MAX_SEQ + "），无法生成同步文件。");
+            MyUi.error(project, "My Pycharm：序号已达上限（" + MAX_SEQ + "），无法生成同名文件。");
             return;
         }
         byte[] content = null;
-        if (MySettings.getInstance(project).getState().syncFileCopyContent) {
+        if (MySettings.getInstance(project).getState().sameNameFileCopyContent) {
             try (InputStream in = f.getInputStream()) {
                 content = in.readAllBytes();
             } catch (IOException ex) {
@@ -91,7 +91,7 @@ public final class NewSyncFileAction extends AnAction {
         });
         VirtualFile created = dir.findChild(targetName);
         if (created != null) {
-            MyUi.info(project, "My Pycharm：已生成同步文件 " + targetName
+            MyUi.info(project, "My Pycharm：已生成同名文件 " + targetName
                     + (bytes != null ? "（复制原内容）" : "（空文件）") + "。");
             new OpenFileDescriptor(project, created).navigate(true);
         }

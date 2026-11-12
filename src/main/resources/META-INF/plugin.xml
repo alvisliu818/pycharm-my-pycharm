@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>local.autoclaw.my-pycharm</id>
     <name>My PyCharm</name>
-    <version>0.2.3</version>
+    <version>0.2.4</version>
     <vendor>autoclaw-local</vendor>
     <description><![CDATA[
     <p>个人插件合集，功能对齐 vscode-my-vscode：</p>
@@ -10,7 +10,7 @@
       <li>把 <code>.git</code> 外迁的分离 git 仓库（各根目录 <code>*-gl.sh</code> 包装脚本自动发现）绑定进版本控制：暂存 / 提交 / 推送 / 拉取 / 切分支 / 管理远程，提交面板直接可用。</li>
       <li>提交图表工具窗（<code>git log --graph</code> 渲染，双击提交查看文件差异）。</li>
       <li>右键「新建同名 MD 文件」。</li>
-      <li>右键「生成同步文件」：同目录生成 <code>名字_0.ext</code>、<code>_1</code>… 序号拼接（设置里可选复制原内容，默认空文件），生成后直接打开。</li>
+      <li>右键「生成同名文件」：同目录生成 <code>名字_0.ext</code>、<code>_1</code>… 序号拼接（设置里可选复制原内容，默认空文件），生成后直接打开。</li>
     </ul>
     ]]></description>
 
@@ -95,8 +95,8 @@
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
 
-        <action id="myPycharm.newSyncFile" class="local.autoclaw.mypycharm.NewSyncFileAction"
-                text="生成同步文件" icon="AllIcons.Actions.Copy">
+        <action id="myPycharm.newSameNameFile" class="local.autoclaw.mypycharm.NewSameNameFileAction"
+                text="生成同名文件" icon="AllIcons.Actions.Copy">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>

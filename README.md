@@ -6,7 +6,7 @@
 2. **分离 git 仓库绑定** — 自动发现各根目录下 `*-gl.sh` 包装脚本中的 `--git-dir` / `--work-tree`（注释行忽略，纯转发脚本自然跳过），把 `.git` 外迁的仓库接进 PyCharm 版本控制体系：提交面板直接可用（变更列表、差异视图、提交），外加刷新/重新加载绑定/切换分支/推送/拉取/同步/发布分支/管理远程/暂存与放弃（选中或全部）。目录内已有自己的 `.git`（自管仓库）时让给内置 Git 集成。
 3. **提交图表工具窗** — 跟随当前编辑器文件所属仓库，`git log --graph -n 300` 渲染（ASCII 图 + 主题 + `短哈希 · 相对时间 · 作者`）；双击提交弹出变更文件列表，选文件查看差异（父提交 ↔ 该提交）。
 4. **新建同名 MD 文件** — 项目视图/编辑器右键，在同目录创建 `<base>.md`（已存在则直接打开）并跳转。
-5. **生成同步文件** — 项目视图/编辑器右键，在同目录生成 `<base>_<序号>.<ext>`（取最小未占用序号：`test.py` → `test_0.py` → `test_1.py`…）并打开；设置里可选「复制原文件内容」，默认创建空文件。
+5. **生成同名文件** — 项目视图/编辑器右键，在同目录生成 `<base>_<序号>.<ext>`（取最小未占用序号：`test.py` → `test_0.py` → `test_1.py`…）并打开；设置里可选「复制原文件内容」，默认创建空文件。
 
 ## 安装
 
@@ -19,7 +19,7 @@
 
 > 提示：若添加仓库时报连接错误，多半是 IDE 没走代理。备选方案：Settings → Appearance & Behavior → System Settings → HTTP Proxy → Manual → Host `127.0.0.1` Port `7897` → Check connection 验证 `https://raw.githubusercontent.com/` 通过后再用 raw 地址。
 
-**方式二（磁盘安装）**：Settings → Plugins → ⚙ → **Install Plugin from Disk...** → 选 `my-pycharm-0.2.3.zip`，重启；若已装同版本再装会弹「Cannot update plugin」，卸载重启后重装即可。
+**方式二（磁盘安装）**：Settings → Plugins → ⚙ → **Install Plugin from Disk...** → 选 `my-pycharm-0.2.4.zip`，重启；若已装同版本再装会弹「Cannot update plugin」，卸载重启后重装即可。
 
 目标平台：PyCharm 2026.3（build 263+）。2026.3 起平台类是 Java 25 字节码，插件随平台要求编译为 release 25。
 
@@ -29,7 +29,7 @@
 
 - `自动发现`（对应 myVscode.autoDiscover，默认开）：解析项目基目录与各内容根下 `*-gl.sh`；
 - `新建同名 MD 文件后在下方分栏打开`（默认开）：右键新建同名 MD 后，若当前有编辑器则在编辑器下方分栏打开新 MD（无编辑器时回退普通打开）；关闭则保持普通打开；
-- `生成同步文件时复制原文件内容`（默认关）：开启后右键生成同步文件会带上原文件内容，关闭则创建空文件；
+- `生成同名文件时复制原文件内容`（默认关）：开启后右键生成同名文件会带上原文件内容，关闭则创建空文件；
 - 绑定表格（对应 myVscode.bindings）：工作树 / git 目录 / 名称 / 强制接管（force：跳过自管检测强制接管）。
 
 设置持久化在项目级 `MyPycharmSettings.xml`。动作入口：VCS 菜单 → My Pycharm 分组；暂存/取消暂存/放弃更改在提交面板右键菜单。
@@ -75,7 +75,7 @@ pwsh tools\build.ps1          # 编译 + 冒烟测试 + 打包 my-pycharm-<versi
 | quickDiff（HEAD:g 内容 URI） | DiffProvider（HEAD 内容）+ ChangeProvider BeforeRevision 差异 |
 | 提交图表 TreeView | 提交图表工具窗（JBList 渲染，双击→文件列表→diff） |
 | `myVscode.newSameNameMd` | ProjectView/Editor 右键同名动作 |
-| —（插件独有） | 右键「生成同步文件」（`_0`/`_1`… 序号拼接，可设置复制原内容，默认空文件） |
+| —（插件独有） | 右键「生成同名文件」（`_0`/`_1`… 序号拼接，可设置复制原内容，默认空文件） |
 | 输出通道日志 | idea.log（`[my-pycharm]` 前缀）+ 气泡通知 |
 
 差异说明：VSCode 的「暂存/工作树」两组在 IntelliJ 里表现为同一变更列表（勾选提交=暂存并提交）；状态栏分支/同步按钮由 VCS 菜单与工具窗承担。
