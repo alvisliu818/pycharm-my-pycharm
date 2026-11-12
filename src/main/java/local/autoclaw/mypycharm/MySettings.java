@@ -38,6 +38,7 @@ public final class MySettings implements PersistentStateComponent<MySettings.Sta
     public static final class State {
         public boolean autoDiscover = true;
         public boolean openMdInSplitDown = true;
+        public boolean syncFileCopyContent = false;
         public List<BindingDef> bindings = new ArrayList<>();
     }
 
@@ -52,6 +53,7 @@ public final class MySettings implements PersistentStateComponent<MySettings.Sta
     public void loadState(State s) {
         state.autoDiscover = s.autoDiscover;
         state.openMdInSplitDown = s.openMdInSplitDown;
+        state.syncFileCopyContent = s.syncFileCopyContent;
         state.bindings = s.bindings == null ? new ArrayList<>() : s.bindings;
     }
 

@@ -18,6 +18,7 @@ public final class MyConfigurable implements Configurable {
     private final Project project;
     private JCheckBox autoDiscover;
     private JCheckBox openMdInSplitDown;
+    private JCheckBox syncFileCopyContent;
     private DefaultTableModel model;
     private JTable table;
     private boolean modified;
@@ -43,6 +44,8 @@ public final class MyConfigurable implements Configurable {
         autoDiscover.addActionListener(l -> modified = true);
         openMdInSplitDown = new JCheckBox("新建同名 MD 文件后在下方分栏打开", st.getState().openMdInSplitDown);
         openMdInSplitDown.addActionListener(l -> modified = true);
+        syncFileCopyContent = new JCheckBox("生成同步文件时复制原文件内容（关闭则创建空文件）", st.getState().syncFileCopyContent);
+        syncFileCopyContent.addActionListener(l -> modified = true);
 
         model = new DefaultTableModel(new Object[]{"工作树", "git 目录", "名称", "强制接管"}, 0) {
             @Override
@@ -82,8 +85,10 @@ public final class MyConfigurable implements Configurable {
         north.setLayout(new BoxLayout(north, BoxLayout.Y_AXIS));
         autoDiscover.setAlignmentX(Component.LEFT_ALIGNMENT);
         openMdInSplitDown.setAlignmentX(Component.LEFT_ALIGNMENT);
+        syncFileCopyContent.setAlignmentX(Component.LEFT_ALIGNMENT);
         north.add(autoDiscover);
         north.add(openMdInSplitDown);
+        north.add(syncFileCopyContent);
         panel.add(north, BorderLayout.NORTH);
         panel.add(new JScrollPane(table), BorderLayout.CENTER);
         panel.add(buttons, BorderLayout.SOUTH);
@@ -100,6 +105,7 @@ public final class MyConfigurable implements Configurable {
         MySettings st = MySettings.getInstance(project);
         st.getState().autoDiscover = autoDiscover.isSelected();
         st.getState().openMdInSplitDown = openMdInSplitDown.isSelected();
+        st.getState().syncFileCopyContent = syncFileCopyContent.isSelected();
         List<MySettings.BindingDef> defs = new ArrayList<>();
         for (int i = 0; i < model.getRowCount(); i++) {
             String wt = str(model.getValueAt(i, 0));
@@ -129,6 +135,7 @@ public final class MyConfigurable implements Configurable {
         MySettings st = MySettings.getInstance(project);
         autoDiscover.setSelected(st.getState().autoDiscover);
         openMdInSplitDown.setSelected(st.getState().openMdInSplitDown);
+        syncFileCopyContent.setSelected(st.getState().syncFileCopyContent);
         model.setRowCount(0);
         for (MySettings.BindingDef d : st.getState().bindings) {
             model.addRow(new Object[]{d.workTree, d.gitDir, d.label, d.force});
