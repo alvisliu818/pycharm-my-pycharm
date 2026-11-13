@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>local.autoclaw.my-pycharm</id>
     <name>My PyCharm</name>
-    <version>0.2.5</version>
+    <version>0.2.6</version>
     <vendor>autoclaw-local</vendor>
     <description><![CDATA[
     <p>个人插件合集，功能对齐 vscode-my-vscode：</p>
@@ -65,7 +65,7 @@
             <action id="myPycharm.push" class="local.autoclaw.mypycharm.vcs.MyVcsActions$PushAction"
                     text="推送" icon="AllIcons.Vcs.Push"/>
             <action id="myPycharm.pull" class="local.autoclaw.mypycharm.vcs.MyVcsActions$PullAction"
-                    text="拉取" icon="AllIcons.Vcs.Update"/>
+                    text="拉取" icon="AllIcons.Actions.Download"/>
             <action id="myPycharm.remotes" class="local.autoclaw.mypycharm.vcs.MyVcsActions$RemotesAction"
                     text="管理远程" icon="AllIcons.Actions.Properties"/>
             <separator/>
@@ -97,7 +97,7 @@
         </action>
 
         <action id="myPycharm.newSameNameOtherFile" class="local.autoclaw.mypycharm.NewSameNameOtherFileAction"
-                text="新建同名其他文件" icon="AllIcons.FileTypes.Any">
+                text="新建同名其他文件" icon="AllIcons.Actions.AddFile">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>

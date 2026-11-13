@@ -20,7 +20,7 @@
 
 > 提示：若添加仓库时报连接错误，多半是 IDE 没走代理。备选方案：Settings → Appearance & Behavior → System Settings → HTTP Proxy → Manual → Host `127.0.0.1` Port `7897` → Check connection 验证 `https://raw.githubusercontent.com/` 通过后再用 raw 地址。
 
-**方式二（磁盘安装）**：Settings → Plugins → ⚙ → **Install Plugin from Disk...** → 选 `my-pycharm-0.2.5.zip`，重启；若已装同版本再装会弹「Cannot update plugin」，卸载重启后重装即可。
+**方式二（磁盘安装）**：Settings → Plugins → ⚙ → **Install Plugin from Disk...** → 选 `my-pycharm-0.2.6.zip`，重启；若已装同版本再装会弹「Cannot update plugin」，卸载重启后重装即可。
 
 目标平台：PyCharm 2026.3（build 263+）。2026.3 起平台类是 Java 25 字节码，插件随平台要求编译为 release 25。
 
@@ -48,6 +48,7 @@
 - 2.20.1 对 2026.3 新布局的缺口：`local()` 的平台 classpath 剔除了 lib 下四个 `intellij.platform.vcs.*.jar`，而 bundledPlugin 描述符只涵盖插件自己的 lib/modules —— 已用 `compileOnly(files(...))` 显式补回（不入产物）；
 - `local()` 指向 `D:/programs/PyCharm2026.3`（无空格 junction，带空格路径会让 localIvy 解析异常）；
 - 产物：`build/distributions/my-pycharm-0.1.0.zip`（含 searchable options，已实机验证）。
+- **plugin.xml 的 `icon="AllIcons.X.Y"` 是运行期反射解析**（编译、打包都不校验）：字段写错时 IDE 启动不报错，直到右键菜单弹出才抛 `PluginException: Icon cannot be found`。改图标必须核对本机 `lib/intellij.platform.icons.jar` 里的资源与 `AllIcons$X` 的字段（0.2.5 误用不存在的 `AllIcons.FileTypes.Any`，0.2.6 改为 `AllIcons.Actions.AddFile`）。
 
 ### 脚本（免 Gradle 备选）
 
