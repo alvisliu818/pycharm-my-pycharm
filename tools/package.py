@@ -1,13 +1,20 @@
 # 打包插件 zip：my-pycharm/lib/my-pycharm-<version>.jar（META-INF/plugin.xml + classes + icons）
-import sys, zipfile, os
+# 版本号从 src/main/resources/META-INF/plugin.xml 的 <version> 读取，不再硬编码（0.2.5 前曾硬编码 0.2.2 过时值）
+import re
+import sys
+import zipfile
 from pathlib import Path
 
 root = Path(sys.argv[1])
 classes = Path(sys.argv[2])
-version = '0.2.2'
+plugin_xml = root / 'src' / 'main' / 'resources' / 'META-INF' / 'plugin.xml'
+m = re.search(r'<version>([^<]+)</version>', plugin_xml.read_text(encoding='utf-8'))
+if not m:
+    raise SystemExit(f'打包失败：{plugin_xml} 里找不到 <version>')
+version = m.group(1).strip()
 jar_name = f'my-pycharm-{version}.jar'
 out_zip = root / f'my-pycharm-{version}.zip'
-res = root / 'src' / 'main' / 'resources'
+res = plugin_xml.parent.parent
 
 jar_tmp = root / 'build' / jar_name
 with zipfile.ZipFile(jar_tmp, 'w', zipfile.ZIP_DEFLATED) as jar:
