@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugins>
   <plugin id="local.autoclaw.my-pycharm"
-          url="https://cdn.jsdelivr.net/gh/alvisliu818/pycharm-my-pycharm@v0.2.4/my-pycharm-0.2.4.zip"
-          version="0.2.4"/>
+          url="https://cdn.jsdelivr.net/gh/alvisliu818/pycharm-my-pycharm@v0.2.5/my-pycharm-0.2.5.zip"
+          version="0.2.5"/>
 </plugins>

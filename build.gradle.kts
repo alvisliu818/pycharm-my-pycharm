@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "local.autoclaw"
-version = "0.2.4"
+version = "0.2.5"
 
 repositories {
     // 本项目零外部依赖；仅需 IntelliJ Platform Gradle Plugin 的仓库集。
