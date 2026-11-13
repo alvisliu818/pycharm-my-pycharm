@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>local.autoclaw.my-pycharm</id>
     <name>My PyCharm</name>
-    <version>0.2.6</version>
+    <version>0.2.7</version>
     <vendor>autoclaw-local</vendor>
     <description><![CDATA[
     <p>个人插件合集，功能对齐 vscode-my-vscode：</p>
@@ -10,7 +10,7 @@
       <li>把 <code>.git</code> 外迁的分离 git 仓库（各根目录 <code>*-gl.sh</code> 包装脚本自动发现）绑定进版本控制：暂存 / 提交 / 推送 / 拉取 / 切分支 / 管理远程，提交面板直接可用。</li>
       <li>提交图表工具窗（<code>git log --graph</code> 渲染，双击提交查看文件差异）。</li>
       <li>右键「新建同名 MD 文件」。</li>
-      <li>右键「新建同名其他文件」：弹框手动填扩展名（<code>md</code>/<code>.md</code> 均可），同目录创建 <code>&lt;base&gt;.&lt;ext&gt;</code>（已存在直接打开）并打开。</li>
+      <li>右键「新建同名其他文件」：弹框预填 <code>&lt;base&gt;.</code> 且光标停在点号后（整名可改），手动补全扩展名；同名已存在时自动加最小未占用序号（<code>foo.md</code> → <code>foo_0.md</code>），同目录创建并打开。</li>
       <li>右键「生成同名文件」：同目录生成 <code>名字_0.ext</code>、<code>_1</code>… 序号拼接（设置里可选复制原内容，默认空文件），生成后直接打开。</li>
     </ul>
     ]]></description>

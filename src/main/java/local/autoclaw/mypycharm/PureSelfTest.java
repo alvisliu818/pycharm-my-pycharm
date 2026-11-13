@@ -87,6 +87,27 @@ public final class PureSelfTest {
         MyCompletionCtxCheck(doc, offset, "./sub/", true);
         System.out.println("OK 补全上下文检测正确");
 
+        // 4) 新建同名其他文件：默认输入（base + 点号）与同名最小序号
+        eq(Pure.defaultSameNameInput("test.py"), "test.", "默认输入保留 base + 点号");
+        eq(Pure.defaultSameNameInput("Makefile"), "Makefile.", "无扩展名默认输入");
+        eq(Pure.defaultSameNameInput("a.b.py"), "a.b.", "多段扩展名默认输入");
+        eq(Pure.pickSameNameTarget("test.md", java.util.Set.of(), 10000), "test.md", "未占用原样返回");
+        eq(Pure.pickSameNameTarget(" test.md ", java.util.Set.of(), 10000), "test.md", "输入 trim");
+        eq(Pure.pickSameNameTarget("test.md", java.util.Set.of("test.md"), 10000), "test_0.md", "同名加序号");
+        eq(Pure.pickSameNameTarget("test.md", java.util.Set.of("test.md", "test_0.md", "test_2.md"), 10000),
+                "test_1.md", "取最小未占用序号（跳过空洞）");
+        eq(Pure.pickSameNameTarget("bar.txt", java.util.Set.of("bar.txt", "bar_0.txt"), 10000),
+                "bar_1.txt", "整名修改后仍按新名加序号");
+        eq(Pure.pickSameNameTarget("noext", java.util.Set.of("noext"), 10000), "noext_0", "无扩展名也能加序号");
+        eq(Pure.pickSameNameTarget("TEST.md", java.util.Set.of("test.md"), 10000), "TEST_0.md", "大小写不敏感比较、保留原大小写");
+        java.util.Set<String> full = new java.util.HashSet<>();
+        full.add("t.md");
+        for (int i = 0; i < 10000; i++) {
+            full.add("t_" + i + ".md");
+        }
+        check(Pure.pickSameNameTarget("t.md", full, 10000) == null, "序号用尽返回 null");
+        System.out.println("OK 新建同名其他文件：默认输入 + 同名最小序号（含上限）正确");
+
         if (failures > 0) {
             System.out.println(failures + " 项断言失败");
             System.exit(1);

@@ -304,6 +304,44 @@ public final class Pure {
         return (d / 86400 / 365) + " 年前";
     }
 
+    // ---------- 新建同名其他文件（文件名生成） ----------
+
+    /** 弹框默认输入：去掉原扩展名，保留 base 并补一个点号（光标随后落在点号后）。 */
+    public static String defaultSameNameInput(String fileName) {
+        if (fileName == null) {
+            return "";
+        }
+        int dot = fileName.lastIndexOf('.');
+        String base = dot > 0 ? fileName.substring(0, dot) : fileName;
+        return base + ".";
+    }
+
+    /**
+     * 目标文件名：未被占用则原样返回；已占用则取 &lt;base&gt;_&lt;最小未占用序号&gt;&lt;ext&gt;；
+     * 序号用尽返回 null。taken 为小写文件名集合（Windows 文件名大小写不敏感），
+     * 返回值保留用户输入的大小写。
+     */
+    public static String pickSameNameTarget(String rawName, Set<String> taken, int maxSeq) {
+        String name = rawName == null ? "" : rawName.trim();
+        if (name.isEmpty()) {
+            return null;
+        }
+        Set<String> used = taken == null ? Set.of() : taken;
+        if (!used.contains(name.toLowerCase(Locale.ROOT))) {
+            return name;
+        }
+        int dot = name.lastIndexOf('.');
+        String base = dot > 0 ? name.substring(0, dot) : name;
+        String ext = dot > 0 ? name.substring(dot) : "";
+        for (int n = 0; n < maxSeq; n++) {
+            String cand = base + "_" + n + ext;
+            if (!used.contains(cand.toLowerCase(Locale.ROOT))) {
+                return cand;
+            }
+        }
+        return null;
+    }
+
     public static String lower(String s) {
         return s == null ? "" : s.toLowerCase(Locale.ROOT);
     }

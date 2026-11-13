@@ -6,7 +6,7 @@
 2. **分离 git 仓库绑定** — 自动发现各根目录下 `*-gl.sh` 包装脚本中的 `--git-dir` / `--work-tree`（注释行忽略，纯转发脚本自然跳过），把 `.git` 外迁的仓库接进 PyCharm 版本控制体系：提交面板直接可用（变更列表、差异视图、提交），外加刷新/重新加载绑定/切换分支/推送/拉取/同步/发布分支/管理远程/暂存与放弃（选中或全部）。目录内已有自己的 `.git`（自管仓库）时让给内置 Git 集成。
 3. **提交图表工具窗** — 跟随当前编辑器文件所属仓库，`git log --graph -n 300` 渲染（ASCII 图 + 主题 + `短哈希 · 相对时间 · 作者`）；双击提交弹出变更文件列表，选文件查看差异（父提交 ↔ 该提交）。
 4. **新建同名 MD 文件** — 项目视图/编辑器右键，在同目录创建 `<base>.md`（已存在则直接打开）并跳转。
-5. **新建同名其他文件** — 项目视图/编辑器右键，弹框手动填扩展名（`md`/`.md` 均可），在同目录创建 `<base>.<ext>`（已存在则直接打开）并打开。
+5. **新建同名其他文件** — 项目视图/编辑器右键，弹框预填 `<base>.`（**光标已停在点号后**，整名可自由修改），手动补全扩展名即创建；同名已存在时自动取最小未占用序号（`foo.md` → `foo_0.md` → `foo_1.md`…），同目录创建空文件并打开。
 6. **生成同名文件** — 项目视图/编辑器右键，在同目录生成 `<base>_<序号>.<ext>`（取最小未占用序号：`test.py` → `test_0.py` → `test_1.py`…）并打开；设置里可选「复制原文件内容」，默认创建空文件。
 
 ## 安装
@@ -20,7 +20,7 @@
 
 > 提示：若添加仓库时报连接错误，多半是 IDE 没走代理。备选方案：Settings → Appearance & Behavior → System Settings → HTTP Proxy → Manual → Host `127.0.0.1` Port `7897` → Check connection 验证 `https://raw.githubusercontent.com/` 通过后再用 raw 地址。
 
-**方式二（磁盘安装）**：Settings → Plugins → ⚙ → **Install Plugin from Disk...** → 选 `my-pycharm-0.2.6.zip`，重启；若已装同版本再装会弹「Cannot update plugin」，卸载重启后重装即可。
+**方式二（磁盘安装）**：Settings → Plugins → ⚙ → **Install Plugin from Disk...** → 选 `my-pycharm-0.2.7.zip`，重启；若已装同版本再装会弹「Cannot update plugin」，卸载重启后重装即可。
 
 目标平台：PyCharm 2026.3（build 263+）。2026.3 起平台类是 Java 25 字节码，插件随平台要求编译为 release 25。
 
@@ -63,7 +63,7 @@ pwsh tools\build.ps1          # 编译 + 冒烟测试 + 打包 my-pycharm-<versi
 
 - **实机验证通过**（沙箱 PyCharm 2026.3 + 隔离 config/plugins，idea.log 断言；脚本构建与 Gradle 构建两种产物各验一轮）：插件加载、`*-gl.sh` 绑定发现、自管过滤、目录映射（`VCS Root: [my-pycharm]`）、ChangeProvider 被平台调度并跑通 `git status --porcelain -z -b` 解析；无插件异常栈、无扩展点注册错误。
 - **纯逻辑冒烟测试**（`PureSelfTest`，对齐 vscode-my-vscode 的 `test/smoke.mjs`）：真实包装脚本解析（myobsidian-gl.sh 命中、gl.sh 转发跳过）、Code 根全部 gl 脚本发现列表、合成 status 解析（中文路径/重命名/双状态/删除）、真实分离仓只读探测、补全上下文判定。
-- **未逐项点验**（编译期已对 2026.3 真实 API 签名校验，但无 GUI 交互验证）：提交面板点击提交、补全弹出交互、图表双击差异、远程管理弹窗链、「下方分栏打开」的交互效果（`EditorWindow.split(JSplitPane.VERTICAL_SPLIT, ...)` 已按 2026.3 源码语义接入，分栏代码随 0.2.1 实机加载验证无异常）。如遇问题看 idea.log 里 `[my-pycharm]` 前缀日志。
+- **未逐项点验**（编译期已对 2026.3 真实 API 签名校验，但无 GUI 交互验证）：提交面板点击提交、补全弹出交互、图表双击差异、远程管理弹窗链、「下方分栏打开」的交互效果（`EditorWindow.split(JSplitPane.VERTICAL_SPLIT, ...)` 已按 2026.3 源码语义接入，分栏代码随 0.2.1 实机加载验证无异常）、「新建同名其他文件」弹框的光标落在点号后（`DialogWrapper` + `JBTextField.setCaretPosition`，纯逻辑的默认输入与序号生成已有冒烟断言覆盖）。如遇问题看 idea.log 里 `[my-pycharm]` 前缀日志。
 
 ## 与 vscode-my-vscode 的对照
 
@@ -77,7 +77,7 @@ pwsh tools\build.ps1          # 编译 + 冒烟测试 + 打包 my-pycharm-<versi
 | quickDiff（HEAD:g 内容 URI） | DiffProvider（HEAD 内容）+ ChangeProvider BeforeRevision 差异 |
 | 提交图表 TreeView | 提交图表工具窗（JBList 渲染，双击→文件列表→diff） |
 | `myVscode.newSameNameMd` | ProjectView/Editor 右键同名动作 |
-| —（插件独有） | 右键「新建同名其他文件」（弹框手填扩展名，同目录 `<base>.<ext>`） |
+| —（插件独有） | 右键「新建同名其他文件」（弹框预填 `<base>.`、光标在点号后、整名可改，同名自动加序号） |
 | —（插件独有） | 右键「生成同名文件」（`_0`/`_1`… 序号拼接，可设置复制原内容，默认空文件） |
 | 输出通道日志 | idea.log（`[my-pycharm]` 前缀）+ 气泡通知 |
 
